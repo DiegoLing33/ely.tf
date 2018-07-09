@@ -2,7 +2,7 @@
 The HDO data navigator
 """
 import core.hdo.consts as consts
-
+import os
 
 class _HDONavigator:
     """
@@ -94,11 +94,47 @@ class _HDONavigator:
         """
         pass
 
+    def is_dataset_files_exists(self):
+        """
+        Returns True if dataset files exist
+        :return:
+        """
+        pass
+
+    def is_w2v_files_exists(self):
+        """
+        Returns True, if w2v files exists
+        :return:
+        """
+        pass
+
+    def is_s2s_files_exists(self):
+        """
+        Returns True, if s2s files exists
+        :return:
+        """
+        pass
+
+    def is_model_files_exists(self):
+        """
+        Returns True, if model files exists
+        :return:
+        """
+        pass
+
 
 class HDONavigator(_HDONavigator):
     """
     The HDO Navigator
     """
+
+    def __init__(self, hdo):
+        """
+        Init function
+        :param hdo: - the HDO object
+        :type hdo: HDO
+        """
+        self.hdo = hdo
 
     def get_path(self):
         return self.hdo.path
@@ -140,3 +176,16 @@ class HDONavigator(_HDONavigator):
             return self.get_file_path(consts.HDO_DIR_S2S, consts.HDO_FILE_S2S_Y)
         else:
             return dict(x=self.get_s2s_file_path(consts.DIM_X), y=self.get_s2s_file_path(consts.DIM_Y))
+
+    def is_dataset_files_exists(self):
+        return os.path.isfile(self.get_dataset_file_path()) \
+               and os.path.isfile(self.get_dataset_file_path(is_dict=True))
+
+    def is_w2v_files_exists(self):
+        return os.path.isfile(self.get_word_list_file_path()) \
+               and os.path.isfile(self.get_w2v_file_path(dim=consts.DIM_X)) \
+               and os.path.isfile(self.get_w2v_file_path(dim=consts.DIM_Y))
+
+    def is_s2s_files_exists(self):
+        return os.path.isfile(self.get_s2s_file_path(dim=consts.DIM_X)) \
+               and os.path.isfile(self.get_s2s_file_path(dim=consts.DIM_Y))
